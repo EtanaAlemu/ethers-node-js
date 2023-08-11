@@ -1,0 +1,6 @@
+.prettierignore
+.prettierrc
+./vscode
+/node_modules
+/logs
+.env
