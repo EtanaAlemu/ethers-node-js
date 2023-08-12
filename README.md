@@ -72,7 +72,7 @@ The API exposes the following endpoints:
 - `POST /sendToken`: Transfer tokens from one address to another using the token contract.
 - `GET /estimateGasPrice`: Estimate the gas price for a transaction.
 
-Refer to the [API documentation](Documentation) for more details on the request and response formats.
+Refer to the [API documentation](DOCUMENTATION.md) for more details on the request and response formats.
 
 ## Contributing
 
