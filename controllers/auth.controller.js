@@ -20,7 +20,7 @@ exports.login = async (req, res, next) => {
     const accessToken = jwt.sign(accessTokenPayload, secretKey, {
       expiresIn: accessTokenExpiresIn,
     });
-    return res.status(200).send({ username: user.username, address: user.address, accessToken });
+    return res.status(200).send({ username: user.username, address: user.address, access_token: accessToken });
   } catch (err) {
     next(err);
   }
