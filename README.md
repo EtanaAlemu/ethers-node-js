@@ -3,7 +3,6 @@
 ![GitHub](https://img.shields.io/github/license/EtanaAlemu/ethers-node-js)
 ![GitHub stars](https://img.shields.io/github/stars/EtanaAlemu/ethers-node-js)
 ![GitHub last commit](https://img.shields.io/github/last-commit/EtanaAlemu/ethers-node-js)
-![Logo](logo.png)
 
 This repository contains a Node.js REST API example that demonstrates how to use the Ethers library to interact with Ethereum using Infura and dotenv for environment variable management. The API showcases various functionalities, including creating an HD wallet, fetching Ethereum and token balances, sending Ethereum and tokens, estimating gas prices, and more. It also offers configurations for both testnet and mainnet environments, determined by the `NODE_ENV` environment variable.
 
