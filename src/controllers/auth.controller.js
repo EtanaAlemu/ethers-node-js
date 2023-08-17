@@ -32,11 +32,10 @@ exports.register = async (req, res, next) => {
     const user = await User.findOne({ username });
     if (user) return res.status(400).send({ message: "User exist with same username" });
     const index = await User.countDocuments({});
-    console.log(index);
     const address = await Wallet.address(index);
     const newUser = await User.create({ username, password, address, index });
 
-    return res.status(201).send({ message: "user registered" });
+    return res.status(201).send({ message: "User registered successfully" });
   } catch (err) {
     next(err);
   }
