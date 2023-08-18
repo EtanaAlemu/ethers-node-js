@@ -3,26 +3,48 @@ const bcrypt = require("bcryptjs");
 
 const { Schema } = mongoose;
 
-const UserSchema = new Schema({
-  username: {
-    type: String,
-    unique: true,
+const UserSchema = new Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    index: {
+      type: String,
+      required: true,
+      unique: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
+  {
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret.index;
+        delete ret.__v;
+      },
+    },
   },
-  address: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  index: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 UserSchema.pre("save", async function (next) {
   try {

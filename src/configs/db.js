@@ -6,7 +6,7 @@ mongoose.promise = global.Promise;
 mongoose.set("strictQuery", true);
 mongoose.set("debug", false);
 const host = process.env.DB_HOST;
-const port = process.env.DB_LOCAL_PORT;
+const port = process.env.DB_DOCKER_PORT;
 const dbName = process.env.DB_NAME;
 const DB_URL = `mongodb://${host}:${port}/${dbName}`;
 //Connect the using mongoose to the database
