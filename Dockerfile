@@ -1,20 +1,40 @@
-FROM node:18
+# ----------------- BASE STAGE ------------------ #
+FROM node:alpine AS base
 
 # Create app directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
-COPY package*.json ./
+COPY package*.json .
+
+EXPOSE 3000
+
+# ----------------- DEVELOPMENT STAGE ------------------ #
+FROM base AS development
+
+ENV NODE_ENV=development
 
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
 
 # Bundle app source
 COPY . .
 
-EXPOSE 3000
+# Running default command 
+CMD ["npm", "run", "dev"]
 
-CMD ["node", "src/index.js"]
+
+# ----------------- PRODUCTION STAGE ------------------- #
+FROM base AS production
+
+ENV NODE_ENV=production
+
+# If you are building your code for production
+RUN npm ci --omit=dev
+
+# Bundle app source
+COPY . .
+
+# Running default command 
+CMD ["npm", "start"]
