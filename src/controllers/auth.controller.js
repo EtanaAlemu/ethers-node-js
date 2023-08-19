@@ -4,19 +4,21 @@ const Wallet = require("../utils/wallet");
 const jwt = require("jsonwebtoken");
 exports.login = async (req, res, next) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
-  if (!user) throw new NotFoundError("User not found");
-  const isMatch = await user.matchPassword(password);
+  const userExist = await User.findOne({ username });
+  if (!userExist) throw new NotFoundError("User not found");
+  const isMatch = await userExist.matchPassword(password);
   if (!isMatch) throw Error("Incorrect password");
   const accessTokenPayload = {
-    id: user._id,
+    id: userExist._id,
   };
   const accessTokenExpiresIn = process.env.JWT_ACCESS_TOKEN_EXPIRES_IN;
   const secretKey = process.env.JWT_SECRET;
-  const accessToken = jwt.sign(accessTokenPayload, secretKey, {
+  const access_token = jwt.sign(accessTokenPayload, secretKey, {
     expiresIn: accessTokenExpiresIn,
   });
-  return res.status(200).send({ username: user.username, role: user.role, address: user.address, access_token: accessToken });
+  const user = userExist.toJSON();
+  user["access_token"] = access_token;
+  return res.status(200).json(user);
 };
 
 exports.register = async (req, res, next) => {
