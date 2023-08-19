@@ -127,14 +127,14 @@ exports.sendToken_UserIdToUserId = async (req, res, next) => {
 
 exports.sendEth_UserToAddr = async (req, res, next) => {
   const { fromUsername, toAddress, amount } = req.body;
-  const fromUser = await User.findById(fromUsername);
+  const fromUser = await User.findOne({ username: fromUsername });
   if (!fromUser) throw new NotFoundError("Sender user not found");
   const { transactionHash } = await Wallet.sendEth(fromUser.index, toAddress, amount);
   return res.status(200).send({ transactionHash, message: "Transaction successful" });
 };
 exports.sendToken_UserToAddr = async (req, res, next) => {
   const { fromUsername, toAddress, amount } = req.body;
-  const fromUser = await User.findById(fromUsername);
+  const fromUser = await User.findOne({ username: fromUsername });
   if (!fromUser) throw new NotFoundError("Sender user not found");
   const { transactionHash } = await Wallet.sendToken(fromUser.index, toAddress, amount);
   return res.status(200).send({ transactionHash, message: "Transaction successful" });
