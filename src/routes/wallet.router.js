@@ -4,6 +4,7 @@ const router = express.Router();
 const { getUserEthBalance, getUserTokenBalance, getEthBalance, getTokenBalance, getAddrEthBalance, getAddrTokenBalance, sendEthToAddr, sendTokenToAddr, sendEthToUserId, sendTokenToUserId, sendEthToUsername, sendTokenToUsername, estimateGasPrice, sendToken_UserIdToUserId, sendEth_UserIdToUserId, sendToken_UserToUser, sendEth_UserToUser, sendEth_UserToAddr, sendToken_UserToAddr } = require("../controllers/wallet.controller");
 const { userAuth, adminAuth } = require("../middlewares/auth");
 
+router.route("/estimateGasPrice").get(estimateGasPrice);
 router.route("/getEthBalance").get(userAuth, getEthBalance);
 router.route("/getTokenBalance").get(userAuth, getTokenBalance);
 router.route("/getAddrEthBalance/:address").get(adminAuth, getAddrEthBalance);
@@ -22,6 +23,5 @@ router.route("/sendEthUserIdToUserId").post(adminAuth, sendEth_UserIdToUserId);
 router.route("/sendTokenUserIdToUserId").post(adminAuth, sendToken_UserIdToUserId);
 router.route("/sendEthUserToAddr").post(adminAuth, sendEth_UserToAddr);
 router.route("/sendTokenUserToAddr").post(adminAuth, sendToken_UserToAddr);
-router.route("/estimateGasPrice").get(estimateGasPrice);
 
 module.exports = router;

@@ -16,7 +16,8 @@
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.4.2"
+    "mongoose": "^7.4.2",
+    "mongoose-paginate-v2": "^1.7.31"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
