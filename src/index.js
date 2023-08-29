@@ -1,5 +1,7 @@
 const dotenv = require("dotenv").config();
 const express = require("express");
+const bodyParser = require("body-parser");
+
 require("express-async-errors");
 const router = require("./routes");
 const errorHandler = require("./middlewares/errorHandler");
@@ -18,11 +20,15 @@ if (nodeEnv === "production") {
   console.log("Running in an unknown environment");
 }
 const app = express();
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(router);
-
 app.use(errorNotFound, errorLogger, errorHandler);
-
 app.listen(port, () => {
   console.log(`Server running on ${port} port`);
 });

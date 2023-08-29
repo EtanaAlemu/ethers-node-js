@@ -5,11 +5,13 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "start": "cross-env NODE_ENV=production node src/index.js"
+    "start": "cross-env NODE_ENV=production node src/index.js",
+    "start-gendoc": "node swagger.js"
   },
   "author": "Etana Alemu",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "ethers": "^6.7.0",
@@ -17,10 +19,13 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.2",
-    "mongoose-paginate-v2": "^1.7.31"
+    "mongoose-paginate-v2": "^1.7.31",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "swagger-autogen": "^2.23.5",
     "nodemon": "^3.0.1"
   }
 }

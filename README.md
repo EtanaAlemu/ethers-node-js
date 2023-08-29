@@ -51,7 +51,7 @@ Make sure you have an Infura project ID. Update the configuration files accordin
 To start the REST API server, run:
 
 ```bash
-npm start
+npm run dev
 ```
 
 The API will be accessible at http://localhost:5000 by default. You can configure the port and other settings in the env files.

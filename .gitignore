@@ -1,26 +1,56 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependency directories
+node_modules/
 
-# dependencies
-/node_modules
-/logs
-/.pnp
-.pnp.js
-.idea
-./vscode
-# testing
-/coverage
+# Build output
+dist/
+build/
 
-# production
-/build
-
-# misc
-.DS_Store
+# Environment variables
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
+.env.development
+.env.test
+.env.production
 
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Editor specific files
+.vscode/
+.idea/
+*.sublime-*
+
+# Compiled binary addons
+**/*.node
+
+# Output of 'npm pack'
+*.tgz
+
+# macOS
+.DS_Store
+
+# Thumbnails created by Windows
+Thumbs.db
+
+# Windows Installer files
+*.msi
+*.msm
+*.msp
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Optional: If using TypeScript
+# .tscache/
+# *.tsbuildinfo
+
+# Optional: If using ESLint
+# .eslintcache/
+
+# Optional: If using Prettier
+# .prettiercache/

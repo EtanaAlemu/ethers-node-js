@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const { userAuth, adminAuth } = require("../middlewares/auth");
-const { getTransaction, getAllTransaction } = require("../controllers/transaction.controller");
+const { getTransactions, getAllTransaction, getTransactionByTx } = require("../controllers/transaction.controller");
 
-router.route("/getTransaction/:txnHash").get(userAuth, getTransaction);
-router.route("/getAllTransaction").get(userAuth, getAllTransaction);
+router.route("/getTransaction/:txnHash").get(userAuth, getTransactionByTx);
+router.route("/getTransactions").get(userAuth, getTransactions);
+router.route("/getAllTransaction").get(adminAuth, getAllTransaction);
 
 module.exports = router;

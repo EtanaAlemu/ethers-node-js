@@ -1,0 +1,2282 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Ethers HD Wallet and Token Transfer Example",
+    "version": "1.0.0",
+    "description": "This REST API demonstrates how to use the Ethers library to interact with Ethereum using Infura. The API showcases various functionalities, including creating an HD wallet, fetching Ethereum and token balances, sending Ethereum and tokens, estimating gas prices, and more"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/",
+      "description": "local server"
+    },
+    {
+      "url": "http://localhost:3000/",
+      "description": "docker server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Endpoints related to user authentication"
+    },
+    {
+      "name": "User",
+      "description": "Endpoints related to user management"
+    },
+    {
+      "name": "Wallet",
+      "description": "Endpoints related to wallet management and send transaction"
+    },
+    {
+      "name": "Transaction",
+      "description": "Endpoints related to transaction history"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Authenticate user",
+        "description": "Endpoint to authenticate a user.",
+        "responses": {
+          "200": {
+            "description": "User log in successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginRes"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginRes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Register user",
+        "description": "Endpoint to add a user.",
+        "responses": {
+          "201": {
+            "description": "User log in successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registerRes"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/registerRes"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User exist with same username.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getUser/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "get specific user",
+        "description": "",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getAllUsers": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "get all users",
+        "description": "",
+        "operationId": "getAllUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number to be enquiry",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "quantity of users object per page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "description": "filter users with there role",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/users"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/users"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/updateUser/{id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "update user by id",
+        "description": "",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deleteUser/{id}": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "delete user by id",
+        "description": "",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Document with 64ecbb91f981e92a17e68cb2 has been deleted.."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Document with 64ecbb91f981e92a17e68cb2 has been deleted.."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getTransaction/{txnHash}": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Get specific transactions by transaction hash",
+        "description": "",
+        "operationId": "getTransactionByTx",
+        "parameters": [
+          {
+            "name": "txnHash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "transaction hash"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getTransactions": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Get all transactions of logged-in user",
+        "description": "",
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number to be enquiry",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "quantity of transactions object per page",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transactions successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getAllTransaction": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Get all transactions",
+        "description": "",
+        "operationId": "getAllTransaction",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number to be enquiry",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "quantity of transactions object per page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "filter transactions with user Id",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transactions successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/estimateGasPrice": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "get Ethereum gas price estimation",
+        "description": "",
+        "operationId": "estimateGasPrice",
+        "responses": {
+          "200": {
+            "description": "Get gas price successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/gasPrice"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/gasPrice"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getEthBalance": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "Get logged-in user Ether balance",
+        "description": "",
+        "operationId": "getEthBalance",
+        "responses": {
+          "200": {
+            "description": "Ether balance successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/etherBalance"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/etherBalance"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getTokenBalance": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "get logged-in user Token balance",
+        "description": "",
+        "operationId": "getTokenBalance",
+        "responses": {
+          "200": {
+            "description": "Token balance successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenBalance"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenBalance"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getAddrEthBalance/{address}": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "get specific address Ether balance",
+        "description": "",
+        "operationId": "getAddrEthBalance",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ethereum address"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ether balance successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/etherBalance"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/etherBalance"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getAddrTokenBalance/{address}": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "get specific address Token balance",
+        "description": "",
+        "operationId": "getAddrTokenBalance",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ethereum address"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token balance successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenBalance"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenBalance"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getUserEthBalance/{id}": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "get specific user Ether balance",
+        "description": "",
+        "operationId": "getUserEthBalance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Ether balance successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ethBalance"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ethBalance"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/getUserTokenBalance/{id}": {
+      "get": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "get specific user token balance",
+        "description": "",
+        "operationId": "getUserTokenBalance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User token balance successfully obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenBalance"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenBalance"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/notFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sendEthToAddr": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Ether from logged-in user to address",
+        "description": "",
+        "operationId": "sendEthToAddr",
+        "parameters": [
+          {
+            "name": "address",
+            "description": "Ethereum address",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send Ether successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToAddr"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ToAddr"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendTokenToAddr": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Token from logged-in user to address",
+        "description": "",
+        "operationId": "sendTokenToAddr",
+        "parameters": [
+          {
+            "name": "address",
+            "description": "Ethereum address",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send Token successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToAddr"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ToAddr"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendEthToUserId": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Ether from logged-in user to user by id",
+        "description": "",
+        "operationId": "sendEthToUserId",
+        "parameters": [
+          {
+            "name": "address",
+            "description": "Ethereum address",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send Ether successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUserId"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUserId"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendTokenToUserId": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Token from logged-in user to user by id",
+        "description": "",
+        "operationId": "sendTokenToUserId",
+        "responses": {
+          "200": {
+            "description": "Send Token successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUserId"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUserId"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendEthToUsername": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Ether from logged-in user to user by username",
+        "description": "",
+        "operationId": "sendEthToUsername",
+        "responses": {
+          "200": {
+            "description": "Send Ether successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUsername"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUsername"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendTokenToUsername": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Token from logged-in user to user by username",
+        "description": "",
+        "operationId": "sendTokenToUsername",
+        "responses": {
+          "200": {
+            "description": "Send Token successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUsername"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ToUsername"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendEthUserToUser": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Ether from username to username",
+        "description": "",
+        "operationId": "sendEthUserToUser",
+        "responses": {
+          "200": {
+            "description": "Send Ether successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToUser"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToUser"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendTokenUserToUser": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Token from username to username",
+        "description": "",
+        "operationId": "sendTokenUserToUser",
+        "responses": {
+          "200": {
+            "description": "Send Token successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToUser"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToUser"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendEthUserIdToUserId": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Ether from user to user by Id",
+        "description": "",
+        "operationId": "sendEthUserIdToUserId",
+        "responses": {
+          "200": {
+            "description": "Send Ether successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserIdToUserId"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UserIdToUserId"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendTokenUserIdToUserId": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Token from user to user by Id",
+        "description": "",
+        "operationId": "sendTokenUserIdToUserId",
+        "responses": {
+          "200": {
+            "description": "Send Token successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserIdToUserId"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UserIdToUserId"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendEthUserToAddr": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Ether from username to user by Id",
+        "description": "",
+        "operationId": "sendEthUserToAddr",
+        "responses": {
+          "200": {
+            "description": "Send Ether successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToAddr"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToAddr"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sendTokenUserToAddr": {
+      "post": {
+        "tags": [
+          "Wallet"
+        ],
+        "summary": "send Token from username to user by Id",
+        "description": "",
+        "operationId": "sendTokenUserToAddr",
+        "responses": {
+          "200": {
+            "description": "Send Token successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/sendTransaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "JWT Token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToAddr"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/UserToAddr"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "auth": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user1"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        },
+        "xml": {
+          "name": "auth"
+        }
+      },
+      "loginRes": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user1"
+          },
+          "role": {
+            "type": "string",
+            "example": "user"
+          },
+          "address": {
+            "type": "string",
+            "example": "0x663f53bE3B2aBfD8F5Fdc26D6f86bD429a6df588"
+          },
+          "id": {
+            "type": "string",
+            "example": "64ecbb91f981e92a17e68cb2"
+          },
+          "access_token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZGZmM2RlODVkMzA5ZjUxYjUzZjlmNSIsImlhdCI6MTY5MzIzNTgyNSwiZXhwIjoxNjkzMzIyMjI1fQ.loh5w-7oOsdTmutxP4T3UJ0ruXpZr3orVd1msbwM_2k"
+          }
+        },
+        "xml": {
+          "name": "loginRes"
+        }
+      },
+      "registerRes": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "User registered successfully"
+          },
+          "user": {
+            "xml": {
+              "name": "user"
+            },
+            "$ref": "#/components/schemas/user"
+          }
+        },
+        "xml": {
+          "name": "registerRes"
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user1"
+          },
+          "role": {
+            "type": "string",
+            "example": "user"
+          },
+          "address": {
+            "type": "string",
+            "example": "0x663f53bE3B2aBfD8F5Fdc26D6f86bD429a6df588"
+          },
+          "id": {
+            "type": "string",
+            "example": "64ecbb91f981e92a17e68cb2"
+          }
+        },
+        "xml": {
+          "name": "user"
+        }
+      },
+      "users": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "xml": {
+                "name": "user"
+              },
+              "$ref": "#/components/schemas/user"
+            }
+          },
+          "totalItems": {
+            "type": "number",
+            "example": 1
+          },
+          "offset": {
+            "type": "number",
+            "example": 0
+          },
+          "pageSize": {
+            "type": "number",
+            "example": 10
+          },
+          "totalPages": {
+            "type": "number",
+            "example": 1
+          },
+          "currentPage": {
+            "type": "number",
+            "example": 1
+          },
+          "pagingCounter": {
+            "type": "number",
+            "example": 1
+          },
+          "hasPrevPage": {
+            "type": "boolean",
+            "example": false
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "example": false
+          },
+          "prevPage": {},
+          "nextPage": {}
+        },
+        "xml": {
+          "name": "users"
+        }
+      },
+      "tokenBalance": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "example": "0xcdaa7e50203D9B48D3A181a02619c812Ce975CA4"
+          },
+          "balance": {
+            "type": "string",
+            "example": "6.0"
+          },
+          "decimal": {
+            "type": "string",
+            "example": "18"
+          },
+          "tokenName": {
+            "type": "string",
+            "example": "MartrezaToken"
+          },
+          "tokenSymbol": {
+            "type": "string",
+            "example": "MTT"
+          }
+        },
+        "xml": {
+          "name": "tokenBalance"
+        }
+      },
+      "etherBalance": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "example": "0xcdaa7e50203D9B48D3A181a02619c812Ce975CA4"
+          },
+          "balance": {
+            "type": "string",
+            "example": "0.00001"
+          }
+        },
+        "xml": {
+          "name": "etherBalance"
+        }
+      },
+      "sendTransaction": {
+        "type": "object",
+        "properties": {
+          "transactionHash": {
+            "type": "string",
+            "example": "0x2fbcd6ffdb8912191c73ee40344626ac788488972d14f9b088e699bcca609a24"
+          },
+          "message": {
+            "type": "string",
+            "example": "Transaction sent successful"
+          }
+        },
+        "xml": {
+          "name": "sendTransaction"
+        }
+      },
+      "gasPrice": {
+        "type": "object",
+        "properties": {
+          "gasPrice": {
+            "type": "string",
+            "example": "10.723000916 Gwei"
+          },
+          "maxFeePerGas": {
+            "type": "string",
+            "example": "22.44598146 Gwei"
+          },
+          "maxPriorityFeePerGas": {
+            "type": "string",
+            "example": "1.0 Gwei"
+          }
+        },
+        "xml": {
+          "name": "gasPrice"
+        }
+      },
+      "transaction": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "64dff3de85d309f51b53f9f5"
+          },
+          "isTokenTx": {
+            "type": "boolean",
+            "example": true
+          },
+          "value": {
+            "type": "number",
+            "example": 1
+          },
+          "toAddress": {
+            "type": "string",
+            "example": "0xF4623e04B96dFa4fc2267ac1217FC86966f56752"
+          },
+          "blockNumber": {
+            "type": "number",
+            "example": 4118919
+          },
+          "txnHash": {
+            "type": "string",
+            "example": "0x451aa55fbeffbeacb2c38ea1a0b2524419c0fb6d3e1e86d3ee7b41a533de3b25"
+          },
+          "txnFee": {
+            "type": "number",
+            "example": 97294588618500
+          },
+          "gasPrice": {
+            "type": "number",
+            "example": 1425561738
+          },
+          "method": {
+            "type": "string",
+            "example": "Transfer"
+          },
+          "id": {
+            "type": "string",
+            "example": "64e1391d9b18a56af76e0f11"
+          }
+        },
+        "xml": {
+          "name": "transaction"
+        }
+      },
+      "ToUserId": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "64e03680359a4d464352aab9"
+          },
+          "amount": {
+            "type": "string",
+            "example": "0.000001"
+          }
+        },
+        "xml": {
+          "name": "ToUserId"
+        }
+      },
+      "UserIdToUserId": {
+        "type": "object",
+        "properties": {
+          "fromUserId": {
+            "type": "string",
+            "example": "64e03680359a4d464352aab9"
+          },
+          "toUserId": {
+            "type": "string",
+            "example": "64e03680359a4d464352aab9"
+          },
+          "amount": {
+            "type": "string",
+            "example": "0.00001"
+          }
+        },
+        "xml": {
+          "name": "UserIdToUserId"
+        }
+      },
+      "UserToUser": {
+        "type": "object",
+        "properties": {
+          "fromUsername": {
+            "type": "string",
+            "example": "admin"
+          },
+          "toUsername": {
+            "type": "string",
+            "example": "user"
+          },
+          "amount": {
+            "type": "string",
+            "example": "0.00001"
+          }
+        },
+        "xml": {
+          "name": "UserToUser"
+        }
+      },
+      "ToAddr": {
+        "type": "object",
+        "properties": {
+          "toAddress": {
+            "type": "string",
+            "example": "0xcdaa7e50203D9B48D3A181a02619c812Ce975CA4"
+          },
+          "amount": {
+            "type": "string",
+            "example": "1"
+          }
+        },
+        "xml": {
+          "name": "ToAddr"
+        }
+      },
+      "UserToAddr": {
+        "type": "object",
+        "properties": {
+          "fromUsername": {
+            "type": "string",
+            "example": "user"
+          },
+          "toAddress": {
+            "type": "string",
+            "example": "0xE5D0A309b17a6494BcccA29573869805dd71a895"
+          },
+          "amount": {
+            "type": "string",
+            "example": "10"
+          }
+        },
+        "xml": {
+          "name": "UserToAddr"
+        }
+      },
+      "ToUsername": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user"
+          },
+          "amount": {
+            "type": "string",
+            "example": "10"
+          }
+        },
+        "xml": {
+          "name": "ToUsername"
+        }
+      },
+      "notFound": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "number",
+            "example": 404
+          },
+          "message": {
+            "type": "string",
+            "example": "Not found."
+          },
+          "stack": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        "xml": {
+          "name": "notFound"
+        }
+      },
+      "error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "number",
+            "example": 500
+          },
+          "message": {
+            "type": "string",
+            "example": "Something went wrong"
+          },
+          "stack": {
+            "type": "string",
+            "example": ""
+          }
+        },
+        "xml": {
+          "name": "error"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

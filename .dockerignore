@@ -1,9 +1,49 @@
-./node_modules
+# Ignore node_modules, as we'll install dependencies inside the Docker container
+node_modules/
 
-Dockerfile
+# Ignore any build artifacts
+build/
+dist/
 
-.dockerignore
-
-docker-compose.yml
-
+# Ignore development-specific files and folders
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.DS_Store
 .env
+.env.local
+.env.*.local
+*.log
+*.pid
+*.lock
+
+# Ignore version control files and directories
+.git/
+.gitignore
+.gitattributes
+
+# Ignore any IDE or editor-specific files
+.vscode/
+.idea/
+*.sublime-*
+
+# Ignore test and documentation files
+__tests__/
+test/
+tests/
+*.spec.js
+*.test.js
+coverage/
+doc/
+docs/
+
+# Ignore any files related to continuous integration
+.circleci/
+.travis.yml
+.github/
+
+# Ignore any deployment or hosting files
+Dockerfile
+docker-compose.yml
+deployment/
+k8s/
