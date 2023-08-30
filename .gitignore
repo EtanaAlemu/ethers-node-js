@@ -54,3 +54,6 @@ yarn.lock
 
 # Optional: If using Prettier
 # .prettiercache/
+
+# Cerificate and Keystors
+*.pem

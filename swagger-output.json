@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5000/",
+      "url": "https://localhost:5000/",
       "description": "local server"
     },
     {
-      "url": "http://localhost:3000/",
+      "url": "https://localhost:3000/",
       "description": "docker server"
     }
   ],

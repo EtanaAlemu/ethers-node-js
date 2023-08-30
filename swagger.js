@@ -17,11 +17,11 @@ const doc = {
   },
   servers: [
     {
-      url: `http://localhost:${process.env.NODE_LOCAL_PORT}/`,
+      url: `https://localhost:${process.env.NODE_LOCAL_PORT}/`,
       description: "local server",
     },
     {
-      url: `http://localhost:${process.env.NODE_DOCKER_PORT}/`,
+      url: `https://localhost:${process.env.NODE_DOCKER_PORT}/`,
       description: "docker server",
     },
   ],

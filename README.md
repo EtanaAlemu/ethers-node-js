@@ -4,7 +4,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/EtanaAlemu/ethers-node-js)
 ![GitHub last commit](https://img.shields.io/github/last-commit/EtanaAlemu/ethers-node-js)
 
-This repository contains a Node.js REST API example that demonstrates how to use the Ethers library to interact with Ethereum using Infura and dotenv for environment variable management. The API showcases various functionalities, including creating an HD wallet, fetching Ethereum and token balances, sending Ethereum and tokens, estimating gas prices, and more. It also offers configurations for both testnet and mainnet environments, determined by the `NODE_ENV` environment variable.
+This repository contains a Node.js REST API that demonstrates how to use the Ethers library to interact with Ethereum using Infura and default provider. The API showcases various functionalities, including creating an HD wallet, fetching Ethereum and token balances, sending Ethereum and tokens, estimating gas prices, and more. It also offers configurations for both testnet and mainnet environments, determined by the `NODE_ENV` environment variable.
 
 **Note:** For the token transfer demonstration, a separate project has been developed for the token contract. You can find the corresponding repository [here](https://github.com/EtanaAlemu/erc20-token-contract), and the frontend project that interacts with the API [here](https://github.com/EtanaAlemu/ethers-hdwallet-frontend).
 
@@ -13,7 +13,8 @@ This repository contains a Node.js REST API example that demonstrates how to use
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
-- [API Endpoints](#api-endpoints)
+- [Docker Support](#docker-support)
+- [API Documentation with Swagger](#api-documentation-with-swagger)
 - [Contributing](#contributing)
 - [License](#license)
 - [Disclaimer](#disclaimer)
@@ -44,6 +45,15 @@ This repository contains a Node.js REST API example that demonstrates how to use
    INFURA_API_KEY = your-infura-project-api-key
    ```
 
+### HTTPS with Self-Signed Certificate
+To enable HTTPS with a self-signed certificate for local development, follow these steps:
+
+1. Generate a self-signed certificate:
+
+   ```bash
+   openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+   ```
+2. Place the generated `key.pem` and `cert.pem` files in a root directory of the project.
 ## Usage
 
 Make sure you have an Infura project ID. Update the configuration files accordingly before running the API.
@@ -54,23 +64,26 @@ To start the REST API server, run:
 npm run dev
 ```
 
-The API will be accessible at http://localhost:5000 by default. You can configure the port and other settings in the env files.
+The API will be accessible at https://localhost:5000 by default. You can configure the port and other settings in the `env` files.
 
 ## Configuration
 
 In the `configs` directory, you will find environment-specific configuration files for testnet and mainnet environments. Update these files with your contract addresses and other configuration parameters as needed.
 
-## API Endpoints
+## Docker Support
 
-The API exposes the following endpoints:
+You can also run the API using Docker. Make sure you have Docker installed. To build and run the Docker container, execute the following commands:
 
-- `POST /register`: Register a new user and create an HD wallet for them.
-- `POST /login`: Log in a user and retrieve their wallet from MongoDB. Provide an access token for subsequent API requests.
-- `GET /getEthBalance`: Get the Ethereum balance of an address.
-- `GET /getTokenBalance`: Get the balance of a specific token for an address.
-- `POST /sendEth`: Send Ethereum from one address to another.
-- `POST /sendToken`: Transfer tokens from one address to another using the token contract.
-- `GET /estimateGasPrice`: Estimate the gas price for a transaction.
+```bash
+docker-compose build
+docker-compose up
+```
+
+The API will be accessible in the container at the same port as specified in the `env` file.
+
+## API Documentation with Swagger
+
+Swagger provides interactive API documentation. You can access the Swagger UI by navigating to `/docs` when the API is running. It provides details about all available endpoints, request/response formats, and more.
 
 Refer to the [API documentation](DOCUMENTATION.md) for more details on the request and response formats.
 
