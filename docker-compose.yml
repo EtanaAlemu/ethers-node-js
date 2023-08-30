@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  ethers-node-js:
+    container_name: ethers-node-js
+    restart: always
+    build:
+      context: ./
+      target: development
+      # target: production
+    image: ethers-node-js:1.0.1
+    volumes:
+      - ./:/usr/src/app
+    env_file: 
+      - .env
+    environment:
+      DB_HOST: mongodb
+      PORT: $NODE_DOCKER_PORT
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    depends_on:
+      - mongodb
+  mongodb:
+    container_name: mongodb
+    restart: always
+    ports:
+      - $DB_LOCAL_PORT:$DB_DOCKER_PORT
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data:
