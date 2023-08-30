@@ -4,8 +4,8 @@
   "description": "Node.js Ethers HD Wallet and Token Transfer Example",
   "main": "src/index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development DB_HOST=mongodb NODE_DOCKER_PORT=3000 NODE_LOCAL_PORT=3000 nodemon src/index.js",
-    "start": "cross-env NODE_ENV=production DB_HOST=mongodb NODE_DOCKER_PORT=3000 NODE_LOCAL_PORT=3000  node src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "start": "cross-env NODE_ENV=production  node src/index.js",
     "start-gendoc": "node swagger.js"
   },
   "author": "Etana Alemu",
