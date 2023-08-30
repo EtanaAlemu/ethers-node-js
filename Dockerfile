@@ -26,16 +26,17 @@ COPY . .
 CMD ["npm", "run", "dev"]
 
 
-# ----------------- PRODUCTION STAGE ------------------- #
-FROM base AS production
+# # ----------------- PRODUCTION STAGE ------------------- #
+# FROM base AS production
 
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
-# If you are building your code for production
-RUN npm ci --omit=dev
+# # If you are building your code for production
+# RUN npm ci --omit=dev
+# RUN npm install cross-env -g
 
-# Bundle app source
-COPY . .
+# # Bundle app source
+# COPY . .
 
-# Running default command 
-CMD ["npm", "start"]
+# # Running default command 
+# CMD ["npm", "start"]
