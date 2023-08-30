@@ -33,20 +33,20 @@ app.use(express.json());
 //Set all routes from routes folder
 app.use("/api", router);
 app.use(errorNotFound, errorLogger, errorHandler);
-// app.listen(port, () => {
-//   console.log(`Server running on ${port} port`);
-// });
+app.listen(port, () => {
+  console.log(`Server running on ${port} port`);
+});
 
-https
-  .createServer(
-    // Provide the private and public key to the server by reading each
-    // file's content with the readFileSync() method.
-    {
-      key: fs.readFileSync("key.pem"),
-      cert: fs.readFileSync("cert.pem"),
-    },
-    app
-  )
-  .listen(port, () => {
-    console.log(`⚡️ [server]: Server is running at https://${host}:${port} in %s mode`, app.get("env"));
-  });
+// https
+//   .createServer(
+//     // Provide the private and public key to the server by reading each
+//     // file's content with the readFileSync() method.
+//     {
+//       key: fs.readFileSync("key.pem"),
+//       cert: fs.readFileSync("cert.pem"),
+//     },
+//     app
+//   )
+//   .listen(port, () => {
+//     console.log(`⚡️ [server]: Server is running at https://${host}:${port} in %s mode`, app.get("env"));
+//   });
