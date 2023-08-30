@@ -8,7 +8,7 @@ mongoose.set("debug", false);
 const host = process.env.DB_HOST;
 const port = process.env.DB_DOCKER_PORT;
 const dbName = process.env.DB_NAME;
-const DB_URL = `mongodb+srv://etana:eviot109@cluster0.mv9yu4y.mongodb.net/${dbName}`;
+const DB_URL = `mongodb+srv://etana:eviot10907@cluster0.mv9yu4y.mongodb.net/${dbName}`;
 //Connect the using mongoose to the database
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
