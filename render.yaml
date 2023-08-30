@@ -1,0 +1,31 @@
+# render.yaml
+
+services:
+  - name: ethers-node-js
+    env: web
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      DB_HOST: "mongodb"
+      PORT: "$NODE_DOCKER_PORT"
+    instanceType: "starter"
+    disk: 10
+    httpPort: "$NODE_LOCAL_PORT"
+    httpHealthCheckPath: "/"
+    dockerfilePath: Dockerfile
+    github:
+      repo: your-github-repo
+      branch: your-branch
+      # Add any other GitHub-related configurations as needed
+
+  - name: mongodb
+    env: web
+    image: "mongo:latest"
+    disk: 10
+    ports:
+      - "$DB_LOCAL_PORT"
+    dockerfilePath: Dockerfile
+    github:
+      repo: your-github-repo
+      branch: your-branch
+      # Add any other GitHub-related configurations as needed
