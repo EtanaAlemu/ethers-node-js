@@ -17,6 +17,7 @@ FROM base AS development
 ENV NODE_ENV=development
 
 RUN npm install
+RUN npm install cross-env -g
 
 # Bundle app source
 COPY . .
