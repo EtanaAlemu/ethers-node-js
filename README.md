@@ -46,6 +46,7 @@ This repository contains a Node.js REST API that demonstrates how to use the Eth
    ```
 
 ### HTTPS with Self-Signed Certificate
+
 To enable HTTPS with a self-signed certificate for local development, follow these steps:
 
 1. Generate a self-signed certificate:
@@ -53,7 +54,9 @@ To enable HTTPS with a self-signed certificate for local development, follow the
    ```bash
    openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
    ```
+
 2. Place the generated `key.pem` and `cert.pem` files in a root directory of the project.
+
 ## Usage
 
 Make sure you have an Infura project ID. Update the configuration files accordingly before running the API.
@@ -83,7 +86,7 @@ The API will be accessible in the container at the same port as specified in the
 
 ## API Documentation with Swagger
 
-Swagger provides interactive API documentation. You can access the Swagger UI by navigating to `/api/docs` when the API is running. It provides details about all available endpoints, request/response formats, and more.
+Swagger provides interactive API documentation. You can access the Swagger UI by navigating to [`/api/docs`](https://ethers-node-js.onrender.com/api/docs/) when the API is running. It provides details about all available endpoints, request/response formats, and more.
 
 Refer to the [API documentation](DOCUMENTATION.md) for more details on the request and response formats.
 
