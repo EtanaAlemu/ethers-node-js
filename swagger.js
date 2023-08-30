@@ -17,15 +17,15 @@ const doc = {
   },
   servers: [
     {
-      url: `https://localhost:${process.env.NODE_LOCAL_PORT}/`,
+      url: `https://${process.env.HOST}:${process.env.PORT}/api`,
       description: "local server",
     },
     {
-      url: `https://localhost:${process.env.NODE_DOCKER_PORT}/`,
+      url: `https://${process.env.HOST}:${process.env.NODE_LOCAL_PORT}/api`,
       description: "docker server",
     },
   ],
-  basePath: "/",
+  basePath: "/api",
   consumes: ["application/json"],
   produces: ["application/json"],
   tags: [

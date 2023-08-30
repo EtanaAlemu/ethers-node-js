@@ -18,9 +18,9 @@ mongoose.set("strictQuery", false);
 mongoose.set("debug", false);
 
 const db = mongoose.connection;
-db.on("error", () => {
-  console.error("connection error: ");
+db.on("error", (err) => {
+  console.error("⛔️ [MongoDB]: ",err);
 });
 db.once("open", () => {
-  console.info("DB Connected successfully");
+  console.info("Database connected ✨");
 });

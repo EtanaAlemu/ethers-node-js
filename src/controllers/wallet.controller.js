@@ -486,9 +486,6 @@ exports.estimateGasPrice = async (req, res, next) => {
       description: 'Get gas price successfully.',
       schema: { $ref: '#/definitions/gasPrice' }
       } 
-  #swagger.responses[500] = { 
-    schema: { "$ref": "#/definitions/error" },
-    description: "JWT Token error" }
    */
   const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = await Wallet.estimateGasFee();
   return res.status(200).send({ gasPrice: `${gasPrice} Gwei`, maxFeePerGas: `${maxFeePerGas} Gwei`, maxPriorityFeePerGas: `${maxPriorityFeePerGas} Gwei` });

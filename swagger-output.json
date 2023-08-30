@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "https://localhost:5000/",
+      "url": "https://localhost:5000/api",
       "description": "local server"
     },
     {
-      "url": "https://localhost:3000/",
+      "url": "https://localhost:5000/api",
       "description": "docker server"
     }
   ],
@@ -702,21 +702,6 @@
               "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/gasPrice"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "JWT Token error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/error"
                 }
               }
             }
