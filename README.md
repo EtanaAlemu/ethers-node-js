@@ -1,4 +1,4 @@
-# Node.js Ethers HD Wallet and Token Transfer Example
+# Ethers.js HD Wallet and Token Transfer
 
 ![GitHub](https://img.shields.io/github/license/EtanaAlemu/ethers-node-js)
 ![GitHub stars](https://img.shields.io/github/stars/EtanaAlemu/ethers-node-js)
