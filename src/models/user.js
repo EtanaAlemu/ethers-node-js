@@ -48,29 +48,32 @@ const UserSchema = new Schema(
 );
 UserSchema.plugin(mongoosePaginate);
 
-UserSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function () {
   // check method of registration
   const user = this;
-  if (!user.isModified("password")) next();
+  if (!user.isModified("password")) return;
   // generate salt
   const salt = await bcrypt.genSalt(10);
   // hash the password
   const hashedPassword = await bcrypt.hash(this.password, salt);
   // replace plain text password with hashed password
   this.password = hashedPassword;
-  next();
 });
-UserSchema.pre("updateOne", async function (next) {
+UserSchema.pre("updateOne", async function () {
   const update = this.getUpdate();
-  if (!update.password) next();
+  const password =
+    update?.password ?? update?.$set?.password;
+  if (!password) return;
   // generate salt
   const salt = await bcrypt.genSalt(10);
   // hash the password
-  const hashedPassword = await bcrypt.hash(update.password, salt);
+  const hashedPassword = await bcrypt.hash(password, salt);
   // replace plain text password with hashed password
-  update.password = hashedPassword;
-
-  next();
+  if (update.password) {
+    update.password = hashedPassword;
+  } else if (update.$set) {
+    update.$set.password = hashedPassword;
+  }
 });
 UserSchema.methods.matchPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
