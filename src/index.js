@@ -7,7 +7,6 @@ const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
 
-require("express-async-errors");
 const router = require("./routes");
 const errorHandler = require("./middlewares/errorHandler");
 const errorLogger = require("./middlewares/errorLogger");
